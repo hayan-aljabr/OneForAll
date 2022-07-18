@@ -60,10 +60,10 @@ class UserController extends Controller
         $validator = Validator::make($input, $rules);*/
         $validator = Validator::make($request->all(),[
             'name' => 'required|string|max:255',
-            'user_name' => 'unique:users|required|string|max:255',
+          //  'user_name' => 'unique:users|required|string|max:255',
             'email'    => 'unique:users|required|string|email|max:255',
             'password' => 'min:8|required_with:password_confirmation|same:password_confirmation',
-            'password_confirmation' => 'min:8',
+            'password_confirmation' => 'required|min:8',
             'phone_number' =>'required|min:10|max:10',
             'age'=>['required',new AgeRange]
 
@@ -83,7 +83,7 @@ class UserController extends Controller
 
         $user = User::query()->create([
             'name' => $request->name,
-            'user_name' => $request->user_name,
+           // 'user_name' => $request->user_name,
             'email' => $request->email,
             'password' => $request->password,
             'phone_number' =>$request->phone_number,

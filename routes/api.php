@@ -6,6 +6,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
 use Illuminate\Http\Request;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\ProfileController;
 use App\Models\Order;
 
 use Illuminate\Support\Facades\Route;
@@ -51,6 +52,8 @@ Route::middleware('auth:api')->post('/cart/products/{product_id}', [ App\Http\Co
 Route::middleware('auth:api')->get('/getCartItems/{id}',[ App\Http\Controllers\CartController::class, 'getCartItems']);
  //create an order from the cart
 Route::middleware('auth:api')->post('/order', [ App\Http\Controllers\CartController::class, 'Order']);
+Route::middleware('auth:api')->post('/profile/change-password', [ App\Http\Controllers\ProfileController::class, 'change_password']);
+Route::middleware('auth:api')->post('/profile/update-profile', [ App\Http\Controllers\ProfileController::class, 'update_profile']);
 
 //retrieve a list of products in the order
 Route::middleware('auth:api')->get('/order/{order_name}', [ App\Http\Controllers\OrderController::class, 'show']);

@@ -28,6 +28,7 @@ class CategoryController extends Controller
     {
         $validator = Validator::make($request->all(),[
             'name' => 'unique:categories|required|string|max:60',
+            'thecategory_id'=>'nullable|numeric'
 
 
     ]);
@@ -38,7 +39,7 @@ class CategoryController extends Controller
 
      $category =   Category::create([
             'name' => request('name'),
-            'thecategory_id' => request('thecategory_id'),
+
 
         ]);
       //  $category = new Category();

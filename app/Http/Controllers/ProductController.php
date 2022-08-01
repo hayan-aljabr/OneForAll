@@ -30,7 +30,6 @@ class ProductController extends Controller
     public function store(Request $request, Product $product)
     {
 
-
         $validator = Validator::make($request->all(),[
             'name' => 'required|string|max:60' ,
             'price' => 'required|int|min:1' ,
@@ -38,28 +37,44 @@ class ProductController extends Controller
             'image_url'=> 'required|mimes:jpg,jpeg,png,doc,docx,pdf,txt,csv|max:2048',
             'quantity'=> 'required|int|max:60',
             'category_id' => 'required',
-
-
-
     ]);
-
         if ($validator->fails()) {
-            return response()->json(['success' => false, 'error' => $validator->messages()]);
+            return response()->json(['message'=>'Validation errors', 'error' => $validator->messages()],422);
         }
+        $user_id  =  (Auth::user())->id;
+        $image_url = time().'.'.$request->image_url->extension();
+        $request->image_url->move(public_path('/uploads/product_images'));
+      $product =  Product::create([
+            'name' => $request->name ,
+            'price' => $request->price ,
+            'description' =>$request->description,
+            'image_url'=> $image_url,
+            'quantity'=> $request->quantity,
+            'category_id' => $request->category_id,
+            'user_id'=>$user_id
+        ]);
+        $product->load('user:id,name,email','category:id,name');
 
-
-    $product = new Product($request->all());
+          //  $product->save();
+            return response()->json([
+                'message'=>'Product Added!',
+                'data'=>$product
+            ],200);
+   /* $product = new Product($request->all());
      // return "dd";
-     $product->user_id  =  (Auth::user())->id;
-
+     $product->
     // $id = optional(Auth::user())->id;
+      if ($request->hasFile('img_url')) {
+        $file = $request->file('img_url');
+        $file_extension = $file->getClientOriginalName();
+        $destination_path = public_path() . '/folder/images/';
+        $filename = $file_extension;
+        $request->file('image')->move($destination_path, $filename);
+        $input['image'] = $filename;
+       /* $path = $file->store('public/files');
+        $name = $file->getClientOriginalName();*/
 
 
-      if ($file = $request->file('img_url')) {
-        $path = $file->store('public/files');
-        $name = $file->getClientOriginalName();
-    }                      $product->save();
-          return $product;
 
 
 

@@ -70,7 +70,7 @@ class UserController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json(['success' => false, 'error' => $validator->messages()]);
+            return response()->json(['success' => false, 'error' => $validator->messages()],422);
         }
        /* $name = $request->name;
         $email    = $request->email;
@@ -117,8 +117,11 @@ class UserController extends Controller
 
         ]);
 
-        if($validator->fails()){
-            return response()->json($validator->errors()->all());
+        if ($validator->fails()) {
+            return response()->json([
+                'message'=>'Validation fails',
+                'errors'=>$validator->errors()
+            ],401);
         }
 
         $credentials = request(['email','password']);
@@ -195,8 +198,14 @@ class UserController extends Controller
     public function update(Request $request)
     {
         $user = Auth::user();
+        $user->update([
+            'name' => $request->name,
+           // 'user_name' => $request->user_name,
+            'email' => $request->email,
+            'phone_number' =>$request->phone_number,
+            'age' => $request->age,
+        ]);
 
-         $user->update($request->all());
          return $user;
 
 

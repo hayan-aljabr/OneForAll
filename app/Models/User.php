@@ -31,7 +31,9 @@ class User extends Authenticatable
         'password',
         'phone_number',
         'age',
-        'user_type'
+        'user_type',
+        'baio',
+        'profile_photo'
     ];
 
   /*  public function isAdmin()

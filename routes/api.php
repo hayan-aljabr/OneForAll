@@ -7,6 +7,7 @@ use App\Http\Controllers\ProductController;
 use Illuminate\Http\Request;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ReviewController;
 use App\Models\Order;
 
 use Illuminate\Support\Facades\Route;
@@ -37,7 +38,16 @@ Route::post('/login', [UserController::class, "login"]);
 Route::middleware('auth:api')->delete('users/{user}', [UserController::class, "destroy"]);
 //Route::put('updateProdcut/{producr}',);
 Route::middleware('auth:api')->Resource('/products', ProductController::class)->except(['index','show']);
+//Route::post('products/{product_id}/reviews',[ReviewController::class, 'store']);
+Route::apiResource('products/{product}/reviews',ReviewController::class);
+//Route::group(['prefix'=>'products'],function(){
+  //  Route::Resource('/{product}/reviews',[ReviewController::class]);
+
+//});
+
 Route::get('/products',[ProductController::class, 'index']);
+Route::get('/products/{product}',[ProductController::class, 'productinfo']);
+
 Route::get('/products/{product_name}',[ProductController::class, 'show']);
 
 
@@ -56,9 +66,12 @@ Route::middleware('auth:api')->post('/profile/change-password', [ App\Http\Contr
 Route::middleware('auth:api')->post('/profile/update-profile', [ App\Http\Controllers\ProfileController::class, 'update_profile']);
 
 //retrieve a list of products in the order
-Route::middleware('auth:api')->get('/order/{order_name}', [ App\Http\Controllers\OrderController::class, 'show']);
+Route::middleware('auth:api')->get('/order/{order_id}', [ App\Http\Controllers\OrderController::class, 'show']);
 
 Route::middleware('auth:api','access.controll')->delete('admin/users/{user}',[AdminController::class, "destroy"]);
+Route::get('/test',function(){
+  return "dd";
+});
 
 
 /*Route::prefix('admin')->group(function(){

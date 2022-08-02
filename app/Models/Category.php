@@ -9,20 +9,21 @@ class Category extends Model
 {
     use HasFactory;
     protected $fillable  = [
-        'thecategory_id',
         'name',
+        'thecategory_id',
+
 
 
     ]   ;
     public function childs()
     {
-        return $this->hasMany(Category::class , 'thecategory_id');
+        return $this->hasMany('\App\Models\Category' , 'thecategory_id');
     }
 
     public function parent()
     {
 
-        $this->belongsTo(Category::class , 'thecategory_id' );
+        $this->belongsTo('\App\Models\Category');
     }
 
 

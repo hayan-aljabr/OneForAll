@@ -28,6 +28,9 @@ class Product extends Model
     public function user(){
         return $this->belongsTo(User::class, 'user_id');
     }
+    public function reviews(){
+        return $this->hasMany(\App\Models\Review::class);
+    }
 
     protected $hidden = ['created_at', 'updated_at'];
 

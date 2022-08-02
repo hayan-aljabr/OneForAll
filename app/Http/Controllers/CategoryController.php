@@ -28,7 +28,7 @@ class CategoryController extends Controller
     {
         $validator = Validator::make($request->all(),[
             'name' => 'unique:categories|required|string|max:60',
-            'thecategory_id'=>'nullable|numeric'
+
 
 
     ]);
@@ -37,14 +37,18 @@ class CategoryController extends Controller
             return response()->json(['success' => false, 'error' => $validator->messages()]);
         }
 
-     $category =   Category::create([
+   /*  $category =   Category::create([
             'name' => request('name'),
 
 
+        ]);*/
+        $category = Category::query()->create([
+            'name' => $request->name,
+            'thecategory_id'=>$request->thecategory_id
+
+           // 'remember_token'=>$request->createToken('personal access token')
         ]);
-      //  $category = new Category();
-        //$category->name = $request->input('name');
-      //  $category->parent_id = $request->input('parent_id');
+      // $category->thecategory_id = $request->input('thecategory_id')->nullable();
        if( $category->save()){
         return redirect()->route('categories.index')->with(['success'=> 'Category added successfuly']);
        } ;

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\ProductResource;
 use App\Models\Category;
 use App\Models\Product;
 use App\Models\User;
@@ -97,6 +98,17 @@ $input['user_id'] = auth()->user()->id;*/
      * @param  \App\Models\Product  $product
      * @return \Illuminate\Http\Response
      */
+
+    public function productinfo(Product $product)
+    {
+     //   $name = auth()->user();
+
+
+        return new ProductResource($product) ;
+
+
+    }
+
     public function show($name)
     {
      //   $name = auth()->user();

@@ -47,7 +47,7 @@ class UserController extends Controller
     }*/
      public function create(Request $request)
     {
-        return "dd";
+
   /*  $rules = [
             'name' => 'required|string|max:255',
             'email'    => 'unique:users|required|string|email|max:255',

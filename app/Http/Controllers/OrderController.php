@@ -41,8 +41,10 @@ class OrderController extends Controller
 
 
 
+
+
        // $order = Auth::user()->orders()->orderBy('created_at', 'desc')->paginate(6);
-        $query = Order::where('name', $request->order_name);
+        $query = Order::where('id', $request->order_id);
        /* if (Auth::id()) {
             $userID = auth('custom_api')->user()->id;
             $query->where('userID',$userID);

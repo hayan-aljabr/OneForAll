@@ -79,6 +79,7 @@ class ProfileController extends Controller
             'name'=>$request->name,
             'baio'=>$request->baio,
             'profile_photo'=>$request->profile_photo,
+            'phone_number'=>$request->phone_number,
         ]);
 
         return response()->json([

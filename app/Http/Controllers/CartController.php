@@ -54,6 +54,7 @@ class CartController extends Controller
     }
     public function addProducts(Request $request){
        // return "dd";
+
         $validator = Validator::make($request->all(), [
             'cartKey' => 'required',
             'quantity' => 'required|numeric|min:1|max:10',
@@ -141,6 +142,10 @@ class CartController extends Controller
         else:
             return response()->json([ 'message' => 'The CarKey you provided does not match the Cart Key for this Cart.', ], 404);
         endif;
+    }
+    public function deletefromcart($cart_id){
+
+
     }
 
 

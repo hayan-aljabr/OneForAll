@@ -29,6 +29,7 @@ class UserController extends Controller
      */
     public function index()
     {
+        //bilal....................
         return User::all();
     }
 
@@ -174,7 +175,7 @@ class UserController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function show($id)
-    {
+    { //...................bilal
         return User::where("id","like","%".$id."%"  )->paginate(5);
     }
 

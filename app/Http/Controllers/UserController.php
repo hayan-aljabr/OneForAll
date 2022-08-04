@@ -29,7 +29,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        //
+        return User::all();
     }
 
     /**
@@ -175,7 +175,7 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        //
+        return User::where("id","like","%".$id."%"  )->paginate(5);
     }
 
     /**
@@ -196,7 +196,7 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request)
+    public function update(Request $request,User $user)
     {
         $user = Auth::user();
         $user->update([

@@ -47,6 +47,7 @@ Route::apiResource('products/{product}/reviews',ReviewController::class);
 
 //});
 Route::middleware('auth:api')->get('/myProducts',[ProductController::class,'showByUser']);
+Route::get('/products/{name}',[ProductController::class, 'show']);
 
 Route::get('/products',[ProductController::class, 'index']);
 Route::get('/products/{product}',[ProductController::class, 'productinfo']);

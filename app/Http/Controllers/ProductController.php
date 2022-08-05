@@ -120,8 +120,7 @@ $input['user_id'] = auth()->user()->id;*/
     {
      //   $name = auth()->user();
 
-        return Product::where("name","like","%".$name."%"  )->paginate(5);
-
+        return Product::where("name","like","%".$name."%"  )->get();
 
     }
    /* public function showByUser(Request $request,$id){
@@ -134,6 +133,7 @@ $input['user_id'] = auth()->user()->id;*/
 {
     $product= Product::with('user')->findOrFail(Auth::user()->id);
     return $product;
+
 }
 
 

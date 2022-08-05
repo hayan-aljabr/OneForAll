@@ -176,7 +176,8 @@ class UserController extends Controller
      */
     public function show($id)
     { //...................bilal
-        return User::where("id","like","%".$id."%"  )->paginate(5);
+        return User::find($id);
+
     }
 
     /**

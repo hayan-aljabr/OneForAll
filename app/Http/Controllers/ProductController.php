@@ -9,6 +9,8 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
+use Nette\Utils\Image;
+use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
@@ -43,8 +45,13 @@ class ProductController extends Controller
             return response()->json(['message'=>'Validation errors', 'error' => $validator->messages()],422);
         }
         $user_id  =  (Auth::user())->id;
-        $image_url = time().'.'.$request->image_url->extension();
-        $request->image_url->move(public_path('/uploads/product_images'));
+       $image_url = 'image_url'.time().'.'.$request->image_url->extension();
+       $request->image_url->move(public_path('/uploads/product_images'),$image_url);
+      // $image_url = time().'.'.$request->image_url->extension();
+     // $request->image_url->move(public_path('/uploads/product_images'));
+     //$image_url = $request->file('image')->move(public_path('/uploads/product_images'),$request->file('image')->getClientOriginalName().".".$request->file('image')->getClientOriginalExtension());
+
+
       $product =  Product::create([
             'name' => $request->name ,
             'price' => $request->price ,
@@ -117,6 +124,18 @@ $input['user_id'] = auth()->user()->id;*/
 
 
     }
+   /* public function showByUser(Request $request,$id){
+
+        return Product::where('user_id','=',$id);
+
+    }*/
+
+    public function showByUser(Request $request)
+{
+    $product= Product::with('user')->findOrFail(Auth::user()->id);
+    return $product;
+}
+
 
     public function showByCategory($category_id){
         return Product::where("category_id","like","%".$category_id."%"  )->get();

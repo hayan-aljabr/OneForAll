@@ -9,7 +9,7 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReviewController;
 use App\Models\Order;
-
+use App\Models\Role;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -46,6 +46,7 @@ Route::apiResource('products/{product}/reviews',ReviewController::class);
   //  Route::Resource('/{product}/reviews',[ReviewController::class]);
 
 //});
+Route::middleware('auth:api')->get('/myProducts',[ProductController::class,'showByUser']);
 
 Route::get('/products',[ProductController::class, 'index']);
 Route::get('/products/{product}',[ProductController::class, 'productinfo']);

@@ -69,12 +69,15 @@ class ProfileController extends Controller
                     File::delete($old_path);
                 }
             }
-
+            if($request->hasFile('profile_photo')){
             $profile_photo = 'profile_photo'.time().'.'.$request->profile_photo->extension();
             $request->profile_photo->move(storage_path('app/public/profile_images'),$profile_photo);
+            }
+
+
         }
         else{
-            $image_name=$user->profile_photo;
+            $profile_photo=$user->profile_photo;
         }
 
         $user->update([

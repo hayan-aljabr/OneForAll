@@ -45,12 +45,16 @@ class ProductController extends Controller
             return response()->json(['message'=>'Validation errors', 'error' => $validator->messages()],422);
         }
         $user_id  =  (Auth::user())->id;
-       $image_url = 'image_url'.time().'.'.$request->image_url->extension();
-       $request->image_url->move(public_path('/uploads/product_images'),$image_url);
-      // $image_url = time().'.'.$request->image_url->extension();
-     // $request->image_url->move(public_path('/uploads/product_images'));
-     //$image_url = $request->file('image')->move(public_path('/uploads/product_images'),$request->file('image')->getClientOriginalName().".".$request->file('image')->getClientOriginalExtension());
 
+
+            $image_url = 'image_url'.time().'.'.$request->image_url->extension();
+            $request->image_url->move(storage_path('app/public/product_images'),$image_url);
+
+        // Storage::disk('public')->putFileAs('uploads/product_images/',$request->image_url, $image_url);
+
+
+
+     $url = storage_path('public\product_images\\' . $image_url);
 
       $product =  Product::create([
             'name' => $request->name ,
@@ -62,12 +66,21 @@ class ProductController extends Controller
             'user_id'=>$user_id
         ]);
         $product->load('user:id,name,email','category:id,name');
+        $product->save();
 
           //  $product->save();
             return response()->json([
                 'message'=>'Product Added!',
-                'data'=>$product
+                'data'=>$product,
+                'image_url'=>$url
             ],200);
+ // $request->image_url->move(public_path('/uploads/product_images'),$image_url);
+      // $image_url = time().'.'.$request->image_url->extension();
+     // $request->image_url->move(public_path('/uploads/product_images'));
+     //$image_url = $request->file('image')->move(public_path('/uploads/product_images'),$request->file('image')->getClientOriginalName().".".$request->file('image')->getClientOriginalExtension());
+
+              // $url= Storage::get('\public\product_images\{{$image_url}}');
+     //$url = Pubi::url('image_url');
    /* $product = new Product($request->all());
      // return "dd";
      $product->
@@ -105,6 +118,10 @@ $input['user_id'] = auth()->user()->id;*/
      * @param  \App\Models\Product  $product
      * @return \Illuminate\Http\Response
      */
+    public function getProductImage()
+    {
+        return $id->image_url;
+    }
 
     public function productinfo(Product $product)
     {

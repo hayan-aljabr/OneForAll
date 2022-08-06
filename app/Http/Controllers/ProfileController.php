@@ -48,6 +48,7 @@ class ProfileController extends Controller
         $validator = Validator::make($request->all(),[
             'name'=>'required|min:2|max:100',
             'baio' => 'nullable|max:100',
+            'email'=>'nullable|',
             'profile_photo' => 'nullable|image|mimes:jpg,bmp,png',
         ]);
 
@@ -70,7 +71,7 @@ class ProfileController extends Controller
             }
 
             $profile_photo = 'profile_photo'.time().'.'.$request->profile_photo->extension();
-            $request->profile_photo->move(public_path('/uploads/profile_images'),$profile_photo);
+            $request->profile_photo->move(storage_path('app/public/profile_images'),$profile_photo);
         }
         else{
             $image_name=$user->profile_photo;

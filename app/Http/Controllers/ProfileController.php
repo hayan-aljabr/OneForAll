@@ -78,6 +78,7 @@ class ProfileController extends Controller
 
         $user->update([
             'name'=>$request->name,
+            'email' => $request->email,
             'baio'=>$request->baio,
             'profile_photo'=>$profile_photo,
             'phone_number'=>$request->phone_number,

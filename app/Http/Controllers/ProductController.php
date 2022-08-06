@@ -131,7 +131,7 @@ $input['user_id'] = auth()->user()->id;*/
 
     public function showByUser(Request $request)
 {
-    $product= Product::with('user')->findOrFail(Auth::user()->id);
+    $product= Product::where('user_id', auth()->user()->id)->get();
     return $product;
 
 }

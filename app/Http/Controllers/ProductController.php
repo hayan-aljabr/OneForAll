@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 use Nette\Utils\Image;
 use Illuminate\Support\Facades\Storage;
-
+use Illuminate\Support\Facades\File;
 class ProductController extends Controller
 {
     /**
@@ -170,14 +170,65 @@ $input['user_id'] = auth()->user()->id;*/
     public function update(Request $request, Product $product)
     {
         if(Auth::id() == $product->user_id){
-             $product->update($request->all());
-             return $product;
-        }
-
-        else{
-             return 'This product does not belong to you';        }
+            $product->update($request->all());
+            return $product;
 
 
+          /*  $validator = Validator::make($request->all(),[
+         /*       'name' => 'nullable|string|max:60' ,
+                'price' => 'nullable|int|min:1' ,
+                'description' =>'nullable|string',
+                'image_url'=> 'nullable|mimes:jpg,jpeg,png,doc,docx,pdf,txt,csv|max:2048',
+                'quantity'=> 'nullable|int|max:60',
+                'category_id' => 'nullable',
+            ]);
+
+            if ($validator->fails()) {
+                return response()->json([
+                    'message'=>'Validation fails',
+                    'errors'=>$validator->errors()
+                ],422);
+            }
+
+
+
+            if($request->hasFile('image_url')){
+                if($product->image_url){
+                    $old_path=storage_path().'app/public/profile_images/'
+                            .$product->image_url;
+                    if(File::exists($old_path)){
+                        File::delete($old_path);
+                    }
+                }
+                if($request->hasFile('image_url')){
+                $image_url = 'image_url'.time().'.'.$request->image_url->extension();
+                $request->image_url->move(storage_path('app/public/product_images'),$image_url);
+                }
+
+
+            }
+            else{
+                $image_url=$product->image_url;
+            }
+
+            $product->update([
+                'name' => $request->name ,
+                'price' => $request->price ,
+                'description' =>$request->description,
+                'image_url'=> $image_url,
+                'quantity'=> $request->quantity,
+                'category_id' => $request->category_id,
+            ]);
+
+            return response()->json([
+                'message'=>'Profile has been updated!',
+
+            ],200);
+        }*/
+
+
+
+    }
 
     }
 

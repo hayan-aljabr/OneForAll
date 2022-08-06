@@ -48,7 +48,7 @@ class ProductController extends Controller
 
 
             $image_url = 'image_url'.time().'.'.$request->image_url->extension();
-            $request->image_url->move(storage_path('app/public/product_images'),$image_url);
+            $request->image_url->move(public_path('storage/product_images'),$image_url);
 
         // Storage::disk('public')->putFileAs('uploads/product_images/',$request->image_url, $image_url);
 

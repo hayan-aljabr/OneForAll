@@ -71,7 +71,7 @@ class ProfileController extends Controller
             }
             if($request->hasFile('profile_photo')){
             $profile_photo = 'profile_photo'.time().'.'.$request->profile_photo->extension();
-            $request->profile_photo->move(storage_path('app/public/profile_images'),$profile_photo);
+            $request->profile_photo->move(public_path('storage/profile_images'),$profile_photo);
             }
 
 

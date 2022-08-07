@@ -6,8 +6,11 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
 use Illuminate\Http\Request;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\FeaturedController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\ReviewController;
+use App\Http\Controllers\WishlistController;
 use App\Models\Order;
 use App\Models\Role;
 use Illuminate\Support\Facades\Route;
@@ -40,6 +43,9 @@ Route::post('/login', [UserController::class, "login"]);
 Route::middleware('auth:api')->delete('users/{user}', [UserController::class, "destroy"]);
 //Route::put('updateProdcut/{producr}',);
 Route::middleware('auth:api')->Resource('/products', ProductController::class)->except(['index','show']);
+Route::post('/report',[ReportController::class, 'store']);
+Route::get('/report',[ReportController::class, 'index']);
+
 //Route::post('products/{product_id}/reviews',[ReviewController::class, 'store']);
 Route::apiResource('products/{product}/reviews',ReviewController::class);
 //Route::group(['prefix'=>'products'],function(){
@@ -51,9 +57,16 @@ Route::get('/products/{name}',[ProductController::class, 'show']);
 Route::get('/productPhoto/{id}', [ProductController::class,'getProductImage']);
 
 Route::get('/products',[ProductController::class, 'index']);
-Route::get('/products/{product}',[ProductController::class, 'productinfo']);
+Route::get('/productsfull/{product}',[ProductController::class, 'productinfo']);
+
+Route::apiResource('/wishlist',WishlistController::class)->except(['create','show','edit','update']);
+
 
 Route::get('/products/{product_name}',[ProductController::class, 'show']);
+Route::get('/product',[ProductController::class, 'filter']);
+
+Route::get('/homepage',[ProductController::class, 'homepageindex']);
+Route::get('/getProduct/{id}',[ProductController::class, 'getProduct']);
 
 
 Route::middleware('auth:api','access.controll')->resource('/categories', CategoryController::class);
@@ -73,7 +86,12 @@ Route::middleware('auth:api')->post('/profile/update-profile', [ App\Http\Contro
 //retrieve a list of products in the order
 Route::middleware('auth:api')->get('/order/{order_id}', [ App\Http\Controllers\OrderController::class, 'show']);
 
+Route::get('/featured',[FeaturedController::class, 'index']);
+Route::post('/featured',[FeaturedController::class, 'store']);
+Route::delete('/featured/{f}',[FeaturedController::class, 'destroy']);
+
 Route::middleware('auth:api','access.controll')->delete('admin/users/{user}',[AdminController::class, "destroy"]);
+Route::middleware('auth:api','access.controll')->delete('admin/products/{product}',[AdminController::class, "deleteProduct"]);
 Route::get('/test',function(){
   return "dd";
 });

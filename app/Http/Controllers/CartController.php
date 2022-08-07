@@ -106,7 +106,7 @@ class CartController extends Controller
 
 
         $validator = Validator::make($request->all(), [
-            'cartKey' => 'required', 'name' => 'required', 'address' => 'required', 'phone'=> 'required|numeric', 'email'=> 'required',
+            'cartKey' => 'required',
         ]);
         if  ($validator->fails()) { return response()->json([ 'errors' => $validator->errors(),  ], 400); }
         //return "dd";
@@ -122,15 +122,13 @@ class CartController extends Controller
                 endif;
             endforeach;
 
-
+             $user = Auth::user();
             $order = Order::create([
                 'products'=>json_encode($products),
                 'totalPrice'=>array_sum($price),
-                'name'=>$request->name,
-                'address'=>$request->address,
-                'phone'=>$request->phone,
-                'email'=>$request->email,
-                'is_guest'=>isset($user_id) ? $user_id : 1,
+                'name'=>$user->name,
+                'phone'=>$user->phone_number,
+                'email'=>$user->email,
                 'user_id'=>  (Auth::user())->id,
             ]);
 

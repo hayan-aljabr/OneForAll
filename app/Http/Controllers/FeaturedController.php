@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Product;
-use App\Models\User;
 use Illuminate\Http\Request;
+use App\Models\Featured;
 
-class AdminController extends Controller
+class FeaturedController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,12 +13,21 @@ class AdminController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-    public function __construct()
+    public function __construct() {
+        $this->middleware(['auth:api'])->except('index');
+        $this->middleware(['access.controll'])->except(['index']);
+    }
+    public function index()
     {
-      //  $this->middleware('access.controll');
+        return Featured::all();
     }
 
-    public function index()
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
     {
         //
     }
@@ -32,7 +40,11 @@ class AdminController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
+        Featured::create([
+            'product_id'=>$request->product_id
+        ]);
+        return response()->json(['message'=>'this porduct has been featured'],200);
     }
 
     /**
@@ -42,6 +54,17 @@ class AdminController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function show($id)
+    {
+        //
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id)
     {
         //
     }
@@ -64,19 +87,9 @@ class AdminController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(User $user)
+    public function destroy(Featured $f)
     {
-        if($user->user_type == 'USR'){
-            $user->delete();
-        }
-        else
-            return response()->json([
-                'message'=>'you are not allowed to delete admins or super admins'
-            ],403) ;
-
-  }
-  public function deleteProduct(Product $product){
-    $product->delete();
-
-  }
+        $f->delete();
+        return Featured::all();
+    }
 }

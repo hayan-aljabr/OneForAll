@@ -7,6 +7,9 @@ use App\Models\User;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Wishlist;
+use App\Models\Report;
+use App\Models\Featured;
 
 class Product extends Model
 {
@@ -31,6 +34,16 @@ class Product extends Model
     public function reviews(){
         return $this->hasMany(\App\Models\Review::class);
     }
+    public function wishlist(){
+        return $this->hasMany(Wishlist::class);
+     }
+     public function reports(){
+        return $this->hasMany(Report::class);
+     }
+     public function featured(){
+        return $this->belongsTo(Featured::class);
+     }
+
 
     protected $hidden = ['created_at', 'updated_at'];
 

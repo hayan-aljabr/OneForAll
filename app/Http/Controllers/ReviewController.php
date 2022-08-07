@@ -43,12 +43,36 @@ class ReviewController extends Controller
         if ($validator->fails()) {
             return response()->json(['message'=>'Validation errors', 'error' => $validator->messages()],422);
         }*/
-        $product->reviews();
-        $findReview = Review::where(['user_id' => Auth::user()->id, 'product_id' => $request->product_id])->first();
-       if($findReview) {
-            return "error', 'You already reviewed this product";
+       // $product->reviews();
+       // $findReview = Review::where(['user_id' => Auth::user()->id, 'product_id' => $request->product_id])->first();
+       //if($findReview) {
+         //   return "error', 'You already reviewed this product";
+       // }
+      // $review = Review::where(['user_id'=>auth()->user()->id, 'product_id'=> $product]);
+            $user = Auth::user();
+            $status = Review::where('user_id',$user->id )
+            ->where('product_id',$request->product_id);
+                if(isset($status->user_id) and isset($request->product_id)){
+                return response()->json(['message'=>'You Already reviewd this product'],403);
+
+             }
+
+
+        if($request->star > '5'){
+            return response()->json([
+                'message'=>'5 star or less'
+            ],403);
+
         }
+        if($request->star < '1'){
+            return response()->json([
+                'message'=>'1 star or more'
+            ],403);
+
+        }
+
         else{
+
                 $review = new Review();
                 $review->review = $request->review;
                 $review->star = $request->star;

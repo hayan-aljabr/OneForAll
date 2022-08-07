@@ -14,6 +14,8 @@ use App\Models\OauthAccessToken;
 use Spatie\Permission\Traits\HasRoles;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
+use App\Models\Wishlist;
+use App\Models\Report;
 
 class User extends Authenticatable
 {
@@ -60,6 +62,13 @@ class User extends Authenticatable
 public function reviews(){
     return $this->hasMany(\App\Models\Review::class);
 }
+public function wishlist(){
+    return $this->hasMany(Wishlist::class);
+ }
+
+public function reports(){
+    return $this->hasMany(\App\Models\Report::class);
+ }
     /**
      * The attributes that should be hidden for serialization.
      *

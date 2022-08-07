@@ -34,7 +34,9 @@ class AccessControll
         $user = auth()->user()->user_type;
 
         if($user == 'USR'){
-           return response('not allowed to take this action', 500);
+           return response()->json([
+            'message'=>'Forbidden'
+           ],403);
         }
 
         return $next($request);

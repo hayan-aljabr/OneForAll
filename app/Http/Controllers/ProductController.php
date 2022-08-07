@@ -21,8 +21,20 @@ class ProductController extends Controller
      */
     public function index()
     {
-        return Product::all();
+        return Product::with(['reviews'])->paginate(16);
     }
+   /* 'name',
+        'price',
+        'description',
+        'image_url',
+        'quantity',
+        'category_id',
+        'user_id'
+* */
+   public function homepageindex(){
+    $product = Product::with(['reviews']);
+    return $product->get();
+   }
 
     /**
      * Store a newly created resource in storage.
@@ -122,8 +134,16 @@ $input['user_id'] = auth()->user()->id;*/
     {
         return $id->image_url;
     }
+    public function getProduct(Request $request,$id){
+        $product = Product::with(['reviews','user','category']);
+        $product->where('id', $id);
+
+
+        return $product->get();
+    }
 
     public function productinfo(Product $product)
+
     {
      //   $name = auth()->user();
 
@@ -137,7 +157,58 @@ $input['user_id'] = auth()->user()->id;*/
     {
      //   $name = auth()->user();
 
-        return Product::where("name","like","%".$name."%"  )->get();
+        $product = Product::where("name","like","%".$name."%"  )->get();
+        return $product;
+
+    }
+    public function filter(Request $request){
+        $product = Product::with(['user','category']);
+        if($request->name){
+            $product->where('name','like','%'.$request->name.'%');
+        }
+        if($request->category){
+            $product->where('category_id',$request->category);
+        }
+        if($request->price_from){
+            $product->where('price','>=',$request->price_from);
+        }
+        if($request->price_to){
+            $product->where('price','<=',$request->price_to);
+        }
+       /* if($request->sortBy && in_array($request->sortBy,['id','price'])){
+            $sortBy=$request->sortBy;
+        }
+        else{
+            $sortBy='id';
+        }*/
+        if($request->sortOrder && in_array($request->sortOrder,['asc','desc'])){
+            $sortOrder=$request->sortOrder;
+        }
+        else{
+            $sortOrder='desc';
+        }
+        $result = $product->orderBY('price',$sortOrder)->paginate(16);
+        return response()->json([
+            'data'=>$result,
+        ],200);
+
+       /* $category_id = $request->query('category_id');
+        $price_from = $request->query('price_from');
+        $price_to = $request->query('price_to');
+
+        $product = Product::query();
+        if($category_id){
+            $product->where('category_id', $category_id);
+        }
+        if($price_from){
+            $product->where('price', '>=' , $price_from);
+        }
+        if($price_to){
+            $product->where('price', '=<' , $price_to);
+        }
+        $result = $product->get();*/
+
+
 
     }
    /* public function showByUser(Request $request,$id){
@@ -155,8 +226,19 @@ $input['user_id'] = auth()->user()->id;*/
 
 
     public function showByCategory($category_id){
-        return Product::where("category_id","like","%".$category_id."%"  )->get();
+        return Product::where('category_id', $category_id)->get();
 }
+    public function scopeFilter($id)
+    {
+        if (request('price_from')) {
+            $id->where('price', '>', request('price_from'));
+        }
+        if (request('price_to')) {
+            $id->where('price', '<', request('price_to'));
+        }
+
+        return $id;
+    }
 
 
 
@@ -169,9 +251,136 @@ $input['user_id'] = auth()->user()->id;*/
      */
     public function update(Request $request, Product $product)
     {
-        if(Auth::id() == $product->user_id){
-            $product->update($request->all());
+        $user = Auth::user();
+
+        if($request->hasFile('image_url')){
+            if($product->image_url){
+                $old_path=public_path().'/storage/product_images/'
+                        .$product->image_url;
+                if(File::exists($old_path)){
+                    File::delete($old_path);
+                }
+            }
+            if($request->hasFile('image_url')){
+            $image_url = 'image_url'.time().'.'.$request->image_url->extension();
+            $request->image_url->move(public_path('/storage/product_images'),$image_url);
+            }
+
+        }
+        else{
+            $image_url=$product->image_url;
+        }
+        if($user->id == $product->user_id){
+            $request->validate([
+                'name' => 'required',
+                'price' => 'required',
+                'description' => 'required',
+            ]);
+
+            $product->update([
+                'name'=> $request->name,
+                'price'=> $request->price,
+                'description'=> $request->description,
+                'image_url'=>$image_url,
+                'quantity'=> $request->quantity,
+                'category_id'=> $request->category_id,
+            ]);
+            $product->save();
             return $product;
+        }
+        else{
+            return "Forrbiedn";
+        }
+
+
+
+
+
+
+/*
+       /* if($request->hasFile('iamge_url')){
+            if($product->image_url){
+                $old_path=public_path().'storage/product_images/'
+                        .$product->image_url;
+                if(File::exists($old_path)){
+                    File::delete($old_path);
+                }
+            }
+            if($request->hasFile('image_url')){
+            $image_url = 'image_url'.time().'.'.$request->image_url->extension();
+            $request->image_url->move(public_path('storage/product_images'),$image_url);
+            }
+
+
+        }
+        else{
+            $image_url=$product->image_url;
+        }*/
+    /*    $product = $request->product_id;
+        $name = $request->name;
+        $price = $request->price;
+        $description = $request->description;
+        $quantity = $request->quantity;
+        $category_id = $request->category_id;
+
+
+
+      /*  $updated = TICKET_TRACKER::where('id', $ticket_row_id)
+            ->update(
+                ['assigned_to_id' => $assigned_to_id],
+                ['team_id' => $team_id],
+                ['resolve_date' => $resolve_date],
+                ['status_id' => $status_id],
+                ['description' => $description]
+            );*/
+      /*  $updated = Product::where('id',$product)
+                ->update([
+                    'name' => $name ,
+                    'price' => $price ,
+                    'description' =>$description,
+                    'quantity'=> $quantity,
+                    'category_id' => $category_id,
+
+        ]);
+
+
+        return response()->json([
+            'message'=>'Product has been updated!',
+            'data'=>$updated
+
+        ],200);*/
+
+
+
+
+        /*$product = Product::find($product);
+       $product->update([
+            $product->name = $request->name,
+            $product->description = $request->description,
+            $product->price = $request->price,
+            $product->quantity = $request->quantity,
+            $product->category_id = $request->category_id,
+        ]);
+
+
+        if ($request->has('image_url')) {
+            $image_url = $request->file('image');
+            $filename = $image_url->getClientOriginalName();
+            $image_url->move(public_path('storage/product_images'), $filename);
+            $product->image_url = $request->file('image_url')->getClientOriginalName();
+
+    }
+
+
+            $product->save();
+            return $product;
+*/
+       /*
+            $product->update([
+                'name' => $request->name,
+
+            ]);;
+            return $product;*/
 
 
           /*  $validator = Validator::make($request->all(),[
@@ -228,7 +437,7 @@ $input['user_id'] = auth()->user()->id;*/
 
 
 
-    }
+
 
     }
 

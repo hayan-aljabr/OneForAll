@@ -225,8 +225,43 @@ $input['user_id'] = auth()->user()->id;*/
 }
 
 
-    public function showByCategory($category_id){
-        return Product::where('category_id', $category_id)->get();
+    public function showByCategory(Request $request){
+        //$product = Product::where('category_id', $category_id)->get();
+        $validator = Validator::make($request->all(),[
+            'category' => 'required',
+    ]);
+        if ($validator->fails()) {
+            return response()->json(['message'=>'Validation errors', 'error' => $validator->messages()],422);
+        }
+        $product = Product::with(['category']);
+        if($request->category){
+            $product->where('category_id',$request->category);
+        }
+        if($request->sortOrder && in_array($request->sortOrder,['asc','desc'])){
+            $sortOrder=$request->sortOrder;
+        }
+        else{
+            $sortOrder='desc';
+        }
+        $result = $product->orderBY('price',$sortOrder)->paginate(16);
+        return response()->json([
+            'data'=>$result,
+        ],200);
+
+
+      /*  if($request->sortOrder && in_array($request->sortOrder,['asc','desc'])){
+            $sortOrder=$request->sortOrder;
+        }
+        else{
+            $sortOrder='desc';
+        }
+        $result = $product->orderBY('price',$sortOrder);
+        return response()->json([
+            'data'=>$result,
+        ],200);*/
+        return $product;
+
+
 }
     public function scopeFilter($id)
     {

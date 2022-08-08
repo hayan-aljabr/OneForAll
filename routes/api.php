@@ -73,7 +73,7 @@ Route::middleware('auth:api','access.controll')->resource('/categories', Categor
 //Route::middleware('auth:api')->post('/storeCate', [CategoryController::class, "store"]);
 //Route::middleware('auth:api')->post('/storePro', [ProductController::class, "store"]);
 Route::middleware('auth:api')->post('/logout', [UserController::class, "logout"]);
-Route::get('/productsCat/{id}' , [ProductController::class, "showByCategory"]);
+Route::get('/productsCat' , [ProductController::class, "showByCategory"]);
 Route::middleware('auth:api')->Resource('cart', CartController::class)->except(['update', 'show','destroy']);
 //add products to the cart
 Route::middleware('auth:api')->post('/cart/products/{product_id}', [ App\Http\Controllers\CartController::class, 'addProducts']);

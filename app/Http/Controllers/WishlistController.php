@@ -20,8 +20,8 @@ class WishlistController extends Controller
     {
 
         $user = Auth::user();
-        $wishlists = Wishlist::where("user_id", "=", $user->id)->orderby('id', 'desc')->paginate(10);
-        return $wishlists;
+        $wishlists = Wishlist::with(['product']);
+        return $wishlists->where("user_id", "=", $user->id)->orderby('id', 'desc')->get();
     }
 
     /**

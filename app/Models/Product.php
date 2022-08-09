@@ -35,7 +35,7 @@ class Product extends Model
         return $this->hasMany(\App\Models\Review::class);
     }
     public function wishlist(){
-        return $this->hasMany(Wishlist::class);
+        return $this->belongsTo(Wishlist::class);
      }
      public function reports(){
         return $this->hasMany(Report::class);
@@ -45,6 +45,6 @@ class Product extends Model
      }
 
 
-    protected $hidden = ['created_at', 'updated_at'];
+    protected $hidden = [];
 
 }

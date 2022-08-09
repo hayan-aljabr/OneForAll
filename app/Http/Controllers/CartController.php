@@ -87,7 +87,7 @@ class CartController extends Controller
     {
        // return "dd";
 
-        $items = CartItmes:: with(['Product' => function ($query) {
+        $items = CartItmes:: with(['product' => function ($query) {
             $query->select('id',  'name',
             'price',
             'description',
@@ -141,7 +141,22 @@ class CartController extends Controller
             return response()->json([ 'message' => 'The CarKey you provided does not match the Cart Key for this Cart.', ], 404);
         endif;
     }
-    public function deletefromcart($cart_id){
+    public function deletefromcart(Request $request,$cart_id){
+
+
+        $cartItem = CartItmes::where('cart_id',$cart_id)->where('product_id',$request->product_id);
+        //$product_id = $request->product_id
+        //$product = $cart->where('product_id',$product_id)->get();
+
+        $cartItem->get();
+        $cartItem->delete();
+
+
+
+
+      /* $cart = CartItmes::with(['cart']);
+        $cart->where('cart_id',$cart_id)->get();
+        return $cart;*/
 
 
     }

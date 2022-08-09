@@ -47,7 +47,8 @@ Route::post('/report',[ReportController::class, 'store']);
 Route::get('/report',[ReportController::class, 'index']);
 
 //Route::post('products/{product_id}/reviews',[ReviewController::class, 'store']);
-Route::apiResource('products/{product}/reviews',ReviewController::class);
+Route::apiResource('products/{product}/reviews',ReviewController::class)->except(['show','update','delete']);
+Route::put('/reviews/{id}',[ReviewController::class,'update']);
 //Route::group(['prefix'=>'products'],function(){
   //  Route::Resource('/{product}/reviews',[ReviewController::class]);
 
@@ -82,6 +83,8 @@ Route::middleware('auth:api')->get('/getCartItems/{id}',[ App\Http\Controllers\C
 Route::middleware('auth:api')->post('/order', [ App\Http\Controllers\CartController::class, 'Order']);
 Route::middleware('auth:api')->post('/profile/change-password', [ App\Http\Controllers\ProfileController::class, 'change_password']);
 Route::middleware('auth:api')->post('/profile/update-profile', [ App\Http\Controllers\ProfileController::class, 'update_profile']);
+
+Route::delete('/deletefromcart/{id}',[CartController::class, 'deletefromcart']);
 
 //retrieve a list of products in the order
 Route::middleware('auth:api')->get('/order/{order_id}', [ App\Http\Controllers\OrderController::class, 'show']);

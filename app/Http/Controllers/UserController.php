@@ -91,12 +91,16 @@ class UserController extends Controller
             'phone_number' =>$request->phone_number,
             'age' => $request->age,
 
+
+
            // 'remember_token'=>$request->createToken('personal access token')
         ]);
 
         $token = $user->createToken('personal access token');
+        $user->remember_token = $token;
 
         $data["user"]=$user;
+
         $data["token_type"] = 'Bearer';
         $data["access_token"] = $token->accessToken;
 

@@ -79,4 +79,18 @@ class AdminController extends Controller
     $product->delete();
 
   }
+  public function adminSeeProducts(){
+    return Product::all();
+  }
+  public function adminSeeUsers(){
+    return User::all();
+  }
+  public function adminLastProducts(){
+    return Product::latest()->take(5)->get();
+  }
+  public function adminLastUsers(){
+    return User::latest()->take(5)->get();
+  }
+
+
 }

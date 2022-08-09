@@ -94,6 +94,10 @@ Route::delete('/featured/{f}',[FeaturedController::class, 'destroy']);
 
 Route::middleware('auth:api','access.controll')->delete('admin/users/{user}',[AdminController::class, "destroy"]);
 Route::middleware('auth:api','access.controll')->delete('admin/products/{product}',[AdminController::class, "deleteProduct"]);
+Route::get('admin/productsAll',[AdminController::class, "adminSeeProducts"]);
+Route::get('admin/usersAll',[AdminController::class, "adminSeeUsers"]);
+Route::get('admin/lastuser',[AdminController::class, "adminLastUsers"]);
+Route::get('admin/lastproduct',[AdminController::class, "adminLastProducts"]);
 Route::get('/test',function(){
   return "dd";
 });

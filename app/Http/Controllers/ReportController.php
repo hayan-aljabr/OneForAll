@@ -19,7 +19,7 @@ class ReportController extends Controller
     }
     public function index()
     {
-        return Report::all();
+        return Report::with(['user','product'])->get();
 
     }
 

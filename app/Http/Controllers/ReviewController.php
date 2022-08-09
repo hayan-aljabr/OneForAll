@@ -21,9 +21,9 @@ class ReviewController extends Controller
     {
         $this->middleware('auth:api')->except('index','show');
     }
-    public function index($product)
+    public function index($id)
     {
-        $product = Product::with(['user','reviews.user']);
+        $product = Product::with(['user','reviews.user'])->where('id',$id);
         return $product->get();
     }
 
@@ -120,7 +120,8 @@ class ReviewController extends Controller
      */
     public function update(Request $request, Review $review)
     {
-
+        $user = Auth::user();
+        if($user->id == $review->user_id){
             $request->validate([
                 'star' => 'required',
                 'review' => 'required'
@@ -129,9 +130,14 @@ class ReviewController extends Controller
             $review->update([
                 'star'=> $request->star,
                 'review'=> $request->review,
+                'user_id'=>$user->id
             ]);
             $review->save();
             return $review;
+
+        }
+
+
 
 
     }
@@ -140,7 +146,7 @@ class ReviewController extends Controller
 
         }*/
 
-}
+
 
     /**
      * Remove the specified resource from storage.
@@ -152,4 +158,5 @@ class ReviewController extends Controller
     {
         //
     }
+
 }

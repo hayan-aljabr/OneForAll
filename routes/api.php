@@ -47,8 +47,7 @@ Route::post('/report',[ReportController::class, 'store']);
 Route::get('/report',[ReportController::class, 'index']);
 
 //Route::post('products/{product_id}/reviews',[ReviewController::class, 'store']);
-Route::apiResource('products/{product}/reviews',ReviewController::class)->except(['show','update','delete']);
-Route::put('/reviews/{id}',[ReviewController::class,'update']);
+Route::middleware('auth:api')->apiResource('products/{product}/reviews',ReviewController::class)->except(['show']);
 //Route::group(['prefix'=>'products'],function(){
   //  Route::Resource('/{product}/reviews',[ReviewController::class]);
 

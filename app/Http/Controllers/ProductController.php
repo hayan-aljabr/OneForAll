@@ -23,6 +23,9 @@ class ProductController extends Controller
     {
         return Product::with(['reviews'])->paginate(16);
     }
+    public function indexMobile(){
+        return Product::all();
+    }
    /* 'name',
         'price',
         'description',
@@ -305,20 +308,46 @@ $input['user_id'] = auth()->user()->id;*/
         else{
             $image_url=$product->image_url;
         }
+        if($request->name){
+            $name = $request->name;
+        }
+        else{
+            $name = $product->name;
+        }
+        if($request->price){
+            $price = $request->price;
+        }
+        else{
+            $price = $product->price;
+        }
+        if($request->description){
+            $description = $request->description;
+        }
+        else{
+            $description = $product->description;
+        }
+        if($request->quantity){
+            $quantity = $request->quantity;
+        }
+        else{
+            $quantity = $product->quantity;
+        }
+        if($request->category_id){
+            $category_id = $request->category_id;
+        }
+        else{
+            $category_id = $product->category_id;
+        }
+
         if($user->id == $product->user_id){
-            $request->validate([
-                'name' => 'required',
-                'price' => 'required',
-                'description' => 'required',
-            ]);
 
             $product->update([
-                'name'=> $request->name,
-                'price'=> $request->price,
-                'description'=> $request->description,
+                'name'=> $name,
+                'price'=> $price,
+                'description'=> $description,
                 'image_url'=>$image_url,
-                'quantity'=> $request->quantity,
-                'category_id'=> $request->category_id,
+                'quantity'=> $quantity,
+                'category_id'=> $category_id,
             ]);
             $product->save();
             return $product;
@@ -328,6 +357,8 @@ $input['user_id'] = auth()->user()->id;*/
                 'message'=>'Forrbiedn'
             ],403);
         }
+
+
 
 
 
@@ -474,6 +505,53 @@ $input['user_id'] = auth()->user()->id;*/
 
 
 
+
+
+    }
+    public function updatefromMoblie(Request $request, Product $product)
+    {
+        $user = Auth::user();
+
+        if($request->hasFile('image_url')){
+            if($product->image_url){
+                $old_path=public_path().'/storage/product_images/'
+                        .$product->image_url;
+                if(File::exists($old_path)){
+                    File::delete($old_path);
+                }
+            }
+            if($request->hasFile('image_url')){
+            $image_url = 'image_url'.time().'.'.$request->image_url->extension();
+            $request->image_url->move(public_path('/storage/product_images'),$image_url);
+            }
+
+        }
+        else{
+            $image_url=$product->image_url;
+        }
+        if($user->id == $product->user_id){
+            $request->validate([
+                'name' => 'required',
+                'price' => 'required',
+                'description' => 'required',
+            ]);
+
+            $product->update([
+                'name'=> $request->name,
+                'price'=> $request->price,
+                'description'=> $request->description,
+                'image_url'=>$image_url,
+                'quantity'=> $request->quantity,
+                'category_id'=> $request->category_id,
+            ]);
+            $product->save();
+            return $product;
+        }
+        else{
+            return response()->json([
+                'message'=>'Forrbiedn'
+            ],403);
+        }
 
 
     }

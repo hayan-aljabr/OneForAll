@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\AccountController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\AnnouncmmentController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
@@ -13,6 +15,7 @@ use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\WishlistController;
 use App\Models\Order;
 use App\Models\Role;
+use App\Http\Controllers\LoyaltyController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -102,6 +105,20 @@ Route::get('/test',function(){
   return "dd";
 });
 
+Route::post('createAccount',[AccountController::class,'store']);
+Route::post('send',[AccountController::class,'send']);
+
+Route::post('announcmment',[AnnouncmmentController::class,'store']);
+
+Route::get('announcmment',[AnnouncmmentController::class,'index']);
+
+Route::get('loyalty',[LoyaltyController::class,'index']);
+
+Route::post('loyalty',[LoyaltyController::class,'store']);
+
+Route::get('allproduct',[ProductController::class,'indexMobile']);
+
+Route::middleware('auth:api')->put('updateProductMobile/{id}',[ProductController::class,'updatefromMoblie']);
 
 /*Route::prefix('admin')->group(function(){
     Route::post('login', AuthController::class , 'login');

@@ -16,7 +16,7 @@ class AccountController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function __construct() {
-        $this->middleware(['auth:api']);
+        $this->middleware(['auth:api'])->except('adminMoney');
     }
     public function index()
     {
@@ -65,7 +65,7 @@ class AccountController extends Controller
     }
     public function send(Request $request)
     {
-        $user = $request->user;
+        $user = 1;
 
 
         $mep = Account::where('user_id',Auth::user()->id)->first();
@@ -73,13 +73,22 @@ class AccountController extends Controller
 
 
         if($request->send){
-            $mep->update([
-                'balance'=>  ($mep->balance) - ($request->send)
-            ]);
-            $another->update([
-                'balance'=>($another->balance) + ($request->send),
-            ]);
-            return $mep;
+            if($mep->balance >= $request->send){
+                $mep->update([
+                    'balance'=>  ($mep->balance) - ($request->send)
+                ]);
+                $another->update([
+                    'balance'=>($another->balance) + ($request->send),
+                ]);
+                return $mep;
+
+            }
+            else{
+                return response()->json([
+                    'message'=>'YOU DONT HAVE ENOUGH POINTS'
+                ],403);
+            }
+
 
 
 
@@ -87,6 +96,24 @@ class AccountController extends Controller
         }
 
 
+
+    }
+
+    public function adminMoney(Request $request){
+        $another = Account::where('user_id',$request->user)->first();
+
+
+        if($request->send){
+
+            $another->update([
+                'balance'=>($another->balance) + ($request->send),
+            ]);
+            return $another;
+
+
+
+
+        }
 
     }
 

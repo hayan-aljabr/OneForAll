@@ -250,7 +250,7 @@ $input['user_id'] = auth()->user()->id;*/
         else{
             $sortOrder='desc';
         }
-        $result = $product->orderBY('price',$sortOrder)->paginate(16);
+        $result = $product->orderBY('price',$sortOrder)->get();
         return response()->json([
             'data'=>$result,
         ],200);

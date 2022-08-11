@@ -34,6 +34,7 @@ class Product extends Model
     public function reviews(){
         return $this->hasMany(\App\Models\Review::class);
     }
+
     public function wishlist(){
         return $this->belongsTo(Wishlist::class);
      }

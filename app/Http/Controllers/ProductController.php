@@ -26,6 +26,10 @@ class ProductController extends Controller
     public function indexMobile(){
         return Product::all();
     }
+    public function searchBYme(Request $request){
+        $product = Product::where('user_id',$request->user_id);
+        return $product->with('user')->get();
+    }
    /* 'name',
         'price',
         'description',

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Featured;
+use App\Models\Product;
 
 class FeaturedController extends Controller
 {
@@ -19,7 +20,7 @@ class FeaturedController extends Controller
     }
     public function index()
     {
-        return Featured::all();
+        return Featured::with(['products'])->get();
     }
 
     /**
@@ -87,9 +88,10 @@ class FeaturedController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Featured $f)
+    public function destroy(Request $request, $pro)
     {
-        $f->delete();
-        return Featured::all();
+        $f = Featured::with(['products'])->where('product_id',$pro)->delete();
+
+         return Featured::all();
     }
 }

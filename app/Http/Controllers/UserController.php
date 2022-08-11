@@ -8,6 +8,7 @@ use HasApiTokens;
 use App\Models\Role;
 use App\Models\User;
 use App\Rules\AgeRange;
+use Carbon\Carbon;
 use Dotenv\Parser\Value;
 use Illuminate\Support\Str;
 use Laravel\Passport\Token;
@@ -66,8 +67,8 @@ class UserController extends Controller
             'email'    => 'unique:users|required|string|email|max:255',
             'password' => 'min:8|required_with:password_confirmation|same:password_confirmation',
             'password_confirmation' => 'required|min:8',
-            'phone_number' =>'required|min:10|max:10',
-            'age'=>['required',new AgeRange]
+            'phone_number' =>'nullable|min:10|max:10',
+            'age'=>['nullable',new AgeRange]
 
         ]);
 
@@ -236,4 +237,22 @@ class UserController extends Controller
            return redirect()->back();
        }
     }
+    public function getMostUser(Request $request){
+        $user = User::withCount(['products']);
+      //  $user->where('created_at',Carbon::now()->month());
+        if($request->sortOrder && in_array($request->sortOrder,['asc','desc'])){
+            $sortOrder=$request->sortOrder;
+        }
+        else{
+            $sortOrder='desc';
+        }
+       $result= $user->whereMonth('created_at', '=', date('m'));
+       $final = $result->orderBY('products_count',$sortOrder)->take(5)->get();
+        return $final;
+
+        /*  return User::withCount(['products' => function ($query) {
+            $query->orderBY('products_count', 'desc');
+    }])->get();*/
+    }
+
 }

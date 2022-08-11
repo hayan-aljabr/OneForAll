@@ -93,7 +93,7 @@ Route::middleware('auth:api')->get('/order/{order_id}', [ App\Http\Controllers\O
 
 Route::get('/featured',[FeaturedController::class, 'index']);
 Route::post('/featured',[FeaturedController::class, 'store']);
-Route::delete('/featured/{f}',[FeaturedController::class, 'destroy']);
+Route::delete('/featured/{product}',[FeaturedController::class, 'destroy']);
 
 Route::middleware('auth:api','access.controll')->delete('admin/users/{user}',[AdminController::class, "destroy"]);
 Route::middleware('auth:api','access.controll')->delete('admin/products/{product}',[AdminController::class, "deleteProduct"]);
@@ -119,6 +119,12 @@ Route::post('loyalty',[LoyaltyController::class,'store']);
 Route::get('allproduct',[ProductController::class,'indexMobile']);
 
 Route::middleware('auth:api')->put('updateProductMobile/{id}',[ProductController::class,'updatefromMoblie']);
+
+Route::get('/byme',[ProductController::class,'searchBYme']);
+
+Route::get('/mostuser',[UserController::class,'getMostUser']);
+
+
 
 /*Route::prefix('admin')->group(function(){
     Route::post('login', AuthController::class , 'login');

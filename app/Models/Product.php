@@ -41,8 +41,8 @@ class Product extends Model
         return $this->hasMany(Report::class);
      }
      public function featured(){
-        return $this->belongsTo(Featured::class);
-     }
+        return $this->belongsTo(\App\Models\Featured::class, 'id', 'id');
+    }
 
 
     protected $hidden = [];

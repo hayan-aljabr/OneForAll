@@ -53,7 +53,7 @@ class User extends Authenticatable
     }*/
 
     public function products(){
-        return $this->hasManyThrough(\App\Models\Product::class, User::class, 'user_id','id');
+        return $this->hasMany(\App\Models\Product::class);
      }
 
      public function orders()

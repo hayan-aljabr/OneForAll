@@ -5,10 +5,11 @@ namespace App\Http\Controllers;
 use HasApiTokens;
 //use Illuminate\Validation\Validator;
 //use Dotenv\Validator;
+use Carbon\Carbon;
 use App\Models\Role;
 use App\Models\User;
+use App\Models\Account;
 use App\Rules\AgeRange;
-use Carbon\Carbon;
 use Dotenv\Parser\Value;
 use Illuminate\Support\Str;
 use Laravel\Passport\Token;
@@ -105,7 +106,25 @@ class UserController extends Controller
         $data["token_type"] = 'Bearer';
         $data["access_token"] = $token->accessToken;
 
-        return response()->json($data);
+        //return response()->json($data);
+
+        ;
+
+        $status = Account::where('user_id',$user->id )
+                ->first();
+        if(isset($status->user_id)){
+        return response()->json(['message'=>'You Already have an Account'],403);
+        }
+
+      else{
+             $account =  Account::create([
+        'user_id'=>$user->id
+    ]);
+    $account->load('user:id,name,email');
+    $account->save();
+    return response()->json($data);
+    return response()->json(['message'=>'Account created','data'=>$data,'data2'=>$account]);
+      }
 
             }
 

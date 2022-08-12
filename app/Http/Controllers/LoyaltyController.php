@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Account;
 use App\Models\Loyalty;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -41,10 +42,15 @@ class LoyaltyController extends Controller
      */
     public function store(Request $request)
     {
+       $user = Account::with('user')->where('user_id',$request->user_id)->first();
         $loyalty = Loyalty::create([
             'user_id'=>$request->user_id,
             'message'=>'Congratulations for being customer of the mounth, contact this email : admin@oneforall.com'
         ]);
+        $user->update([
+            'balance'=>  ($user->balance) + 1000
+        ]);
+
         return $loyalty;
     }
 

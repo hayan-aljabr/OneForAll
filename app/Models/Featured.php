@@ -15,6 +15,6 @@ class Featured extends Model
     ]   ;
 
     public function products(){
-        return $this->hasMany(\App\Models\Product::class,'id');
+        return $this->hasMany(\App\Models\Product::class,'id','product_id');
      }
 }

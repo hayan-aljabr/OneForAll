@@ -123,9 +123,9 @@ class AccountController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
-    {
-        //
+    public function show(){
+        $user = Account::with('user')->where('user_id',Auth::user()->id)->first();
+        return $user;
     }
 
     /**

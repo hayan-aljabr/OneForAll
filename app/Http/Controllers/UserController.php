@@ -110,13 +110,8 @@ class UserController extends Controller
 
         ;
 
-        $status = Account::where('user_id',$user->id )
-                ->first();
-        if(isset($status->user_id)){
-        return response()->json(['message'=>'You Already have an Account'],403);
-        }
 
-      else{
+
              $account =  Account::create([
         'user_id'=>$user->id
     ]);
@@ -126,7 +121,7 @@ class UserController extends Controller
     return response()->json(['message'=>'Account created','data'=>$data,'data2'=>$account]);
       }
 
-            }
+
 
 
     /**

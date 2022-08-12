@@ -124,7 +124,7 @@ Route::get('/byme',[ProductController::class,'searchBYme']);
 
 Route::get('/mostuser',[UserController::class,'getMostUser']);
 
-Route::post('/adminMoney',[AccountController::class,'adminMoney']);
+Route::pos('/adminMoney',[AccountController::class,'adminMoney']);
 
 
 /*Route::prefix('admin')->group(function(){

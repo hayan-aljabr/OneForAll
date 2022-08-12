@@ -144,12 +144,14 @@ class CartController extends Controller
     public function deletefromcart(Request $request,$cart_id){
 
 
-        $cartItem = CartItmes::where('cart_id',$cart_id)->where('product_id',$request->product_id);
+            $cartItem = CartItmes::where('cart_id',$cart_id)->where('product_id',$request->product_id);
         //$product_id = $request->product_id
         //$product = $cart->where('product_id',$product_id)->get();
 
-        $cartItem->get();
-        $cartItem->delete();
+            $cartItem->get();
+            $cartItem->delete();
+
+
 
 
 

@@ -23,8 +23,13 @@ class ReviewController extends Controller
     }
     public function index($id)
     {
-        $product = Product::with(['user','reviews.user'])->where('id',$id);
-        return $product->get(); //'user:id,email,name,profile_photo','reviews.user:id,email,profile_photo'
+        $product = Product::with(['user','reviews.user'])->where('id',$id)->first();
+        $review = $product->reviews()->avg('star');
+
+        $data["product"]=$product;
+        $data["review_avg"] = $review;
+        return $data;
+        //'user:id,email,name,profile_photo','reviews.user:id,email,profile_photo'
     }
 
     /**

@@ -114,6 +114,9 @@ class AccountController extends Controller
 
 
         }
+        else{
+            return response()->json(['message'=>'you dont have an account']);
+        }
 
     }
 

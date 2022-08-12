@@ -113,7 +113,7 @@ class WishlistController extends Controller
     public function destroy($id)
     {   $user = Auth::user();
 
-        $wishlist = Wishlist::find($id);
+        $wishlist = Wishlist::where('id',$id)->first();
 
 
 
@@ -122,7 +122,7 @@ class WishlistController extends Controller
             return response()->json(['message'=>'Done','data'=>$this->index()],200);
         }
        else{
-        return 'This product is not yours to delete';
+        return  response()->json(['message'=>'This product is not yours to delete'],403);
        }
 
 

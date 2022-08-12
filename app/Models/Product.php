@@ -44,6 +44,10 @@ class Product extends Model
      public function featured(){
         return $this->belongsTo(\App\Models\Featured::class, 'id', 'id');
     }
+    public function avgReview(){
+        return $this->reviews()->avg('rating');
+
+    }
 
 
     protected $hidden = [];

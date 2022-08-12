@@ -127,6 +127,7 @@ Route::get('/mostuser',[UserController::class,'getMostUser']);
 Route::post('/adminMoney',[AccountController::class,'adminMoney']);
 
 Route::get('/seemoney',[AccountController::class,'show']);
+Route::get('/userLoyal',[LoyaltyController::class,'userLoyal']);
 
 
 /*Route::prefix('admin')->group(function(){

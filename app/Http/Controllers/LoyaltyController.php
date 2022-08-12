@@ -18,10 +18,10 @@ class LoyaltyController extends Controller
     public function __construct() {
         $this->middleware(['auth:api']);
     }
-    public function index()
+    public function index(Request $request)
     {
-        $user = Auth::user();
-        return Loyalty::where('user_id',$user->id)->first();
+
+        return Loyalty::all();
     }
 
     /**
@@ -86,6 +86,17 @@ class LoyaltyController extends Controller
     public function update(Request $request, $id)
     {
         //
+    }
+    public function userLoyal(){
+        Auth::user();
+        $loyalty = Loyalty::where('user_id',Auth::user()->id)->first();
+        if($loyalty){
+            return response()->json(['data'=>$loyalty->message],200);
+        }
+        else{
+            return response()->json(['message'=>'welcome']);
+        }
+
     }
 
     /**

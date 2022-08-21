@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 use App\Models\Wishlist;
 use App\Models\Report;
 use App\Models\Featured;
+use App\Models\Transaction;
 
 class Product extends Model
 {
@@ -47,6 +48,9 @@ class Product extends Model
     public function avgReview(){
         return $this->reviews()->avg('rating');
 
+    }
+    public function trans(){
+        return $this->belongsToMany(\App\Models\Transaction::class);
     }
 
 

@@ -10,6 +10,7 @@ class CreateProductsTable extends Migration
      * Run the migrations.
      *
      * @return void
+     * products
      */
     public function up()
     {

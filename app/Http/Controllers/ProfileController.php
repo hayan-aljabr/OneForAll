@@ -46,7 +46,7 @@ class ProfileController extends Controller
 
     public function update_profile(Request $request){
         $validator = Validator::make($request->all(),[
-            'name'=>'required|min:2|max:100',
+            'name'=>'nullable|min:2|max:100',
             'baio' => 'nullable|max:100',
             'email'=>'nullable|',
             'profile_photo' => 'nullable|image|mimes:jpg,bmp,png',
@@ -71,7 +71,7 @@ class ProfileController extends Controller
             }
             if($request->hasFile('profile_photo')){
             $profile_photo = 'profile_photo'.time().'.'.$request->profile_photo->extension();
-            $request->profile_photo->move(public_path('storage/profile_images'),$profile_photo);
+            $request->profile_photo->move(public_path('uploads/profile_images'),$profile_photo);
             }
 
 
@@ -79,10 +79,22 @@ class ProfileController extends Controller
         else{
             $profile_photo=$user->profile_photo;
         }
+        if($request->email){
+            $email = $request->email;
+        }
+        else{
+            $email = $user->email;
+        }
+        if($request->name){
+            $name = $request->name;
+        }
+        else{
+            $name = $user->name;
+        }
 
         $user->update([
-            'name'=>$request->name,
-            'email' => $request->email,
+            'name'=>$name,
+            'email' => $email,
             'baio'=>$request->baio,
             'profile_photo'=>$profile_photo,
             'phone_number'=>$request->phone_number,

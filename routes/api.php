@@ -129,6 +129,8 @@ Route::post('/adminMoney',[AccountController::class,'adminMoney']);
 Route::get('/seemoney',[AccountController::class,'show']);
 Route::get('/userLoyal',[LoyaltyController::class,'userLoyal']);
 
+Route::get('/transaction',[AccountController::class,'index']);
+
 
 /*Route::prefix('admin')->group(function(){
     Route::post('login', AuthController::class , 'login');

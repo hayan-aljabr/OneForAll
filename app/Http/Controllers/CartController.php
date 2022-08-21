@@ -127,7 +127,6 @@ class CartController extends Controller
                 'products'=>json_encode($products),
                 'totalPrice'=>array_sum($price),
                 'name'=>$user->name,
-                'phone'=>$user->phone_number,
                 'email'=>$user->email,
                 'user_id'=>  (Auth::user())->id,
             ]);

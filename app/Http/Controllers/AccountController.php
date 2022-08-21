@@ -3,10 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\Account;
+use App\Models\Product;
 use App\Models\Review;
+use App\Models\Transaction;
 use App\Models\User;
+
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+
 
 class AccountController extends Controller
 {
@@ -16,11 +20,11 @@ class AccountController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function __construct() {
-        $this->middleware(['auth:api'])->except('adminMoney');
+        $this->middleware(['auth:api'])->except('adminMoney','index');
     }
     public function index()
     {
-
+        return Transaction::with('product','account.user')->get();
     }
 
     /**
@@ -30,7 +34,7 @@ class AccountController extends Controller
      */
     public function create()
     {
-        //
+
     }
 
     /**
@@ -65,24 +69,35 @@ class AccountController extends Controller
     }
     public function send(Request $request)
     {
+        $product_id = $request->product_id;
         $user = 1;
 
 
         $mep = Account::where('user_id',Auth::user()->id)->first();
         $another = Account::where('user_id',$user)->first();
+        $product = Product::where('id',$product_id)->first();
 
 
-        if($request->send){
-            if($mep->balance >= $request->send){
+
+
+
+            if($product->quantity >=0 and $mep->balance >= $product->price){
+
                 $mep->update([
-                    'balance'=>  ($mep->balance) - ($request->send)
+                    'balance'=>  ($mep->balance) - ($product->price)
                 ]);
                 $another->update([
-                    'balance'=>($another->balance) + ($request->send),
+                    'balance'=>($another->balance) + ($product->price),
                 ]);
-                return $mep;
+                $trans = Transaction::create([
+                    'account_id'=> $mep->id,
+                    'product_id'=>$request->product_id,
+                    'operation'=>$product->price
+                ]);
 
+                return $trans;
             }
+
             else{
                 return response()->json([
                     'message'=>'YOU DONT HAVE ENOUGH POINTS'
@@ -93,7 +108,7 @@ class AccountController extends Controller
 
 
 
-        }
+
 
 
 
@@ -139,7 +154,7 @@ class AccountController extends Controller
      */
     public function edit($id)
     {
-        //
+        Account::with('user')->where('id',$id)->first();
     }
 
     /**

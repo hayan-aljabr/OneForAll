@@ -19,7 +19,7 @@ class CreateOrdersTable extends Migration
             $table->decimal('totalPrice');
             $table->string('name');
            // $table->text('address');
-            $table->integer('phone');
+            $table->integer('phone')->nullable();
             $table->string('email');
             $table->string('transactionID')->nullable(true);
             $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();

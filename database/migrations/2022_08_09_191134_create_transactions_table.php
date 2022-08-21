@@ -16,9 +16,8 @@ class CreateTransactionsTable extends Migration
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
             $table->foreignId('account_id')->constrained('accounts')->cascadeOnDelete();
-            $table->enum('operation',['Recive','Send']);
-            $table->integer('amount');
-            $table->dateTime('date');
+            $table->foreignId('product_id')->constrained('products')->cascadeOnDelete();
+            $table->integer('operation');
             $table->timestamps();
         });
     }

@@ -98,6 +98,18 @@ class LoyaltyController extends Controller
         }
 
     }
+    public function userMessage(Request $request){
+
+        $loyalty = Loyalty::create([
+            'user_id'=>$request->user_id,
+            'message'=>$request->message
+        ]);
+
+
+        return $loyalty;
+
+
+    }
 
     /**
      * Remove the specified resource from storage.

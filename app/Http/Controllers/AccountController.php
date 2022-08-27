@@ -10,7 +10,7 @@ use App\Models\User;
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
-
+use Illuminate\Http\Models\Role;
 
 class AccountController extends Controller
 {
@@ -30,10 +30,13 @@ class AccountController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\response
      */
     public function create()
     {
+        $account = Account::create([
+            'user_id'=>Auth::user(),
+        ]);
 
     }
 
@@ -155,6 +158,7 @@ class AccountController extends Controller
     public function edit($id)
     {
         Account::with('user')->where('id',$id)->first();
+     /**/
     }
 
     /**

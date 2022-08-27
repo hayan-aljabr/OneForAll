@@ -1,11 +1,18 @@
 <?php
 
 namespace App\Models;
-
-use App\Models\Cart;
-use App\Models\Product;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Http\Request;
+use App\Models\User;
+use Illuminate\Http\JsonResponse;
+use Facade\FlareClient\Http\Response;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
+use Laravel\Passport\Token;
+use App\Models\School;
+use APP\Models\Classe;
+use HasApiTokens;
 
 class CartItmes extends Model
 {

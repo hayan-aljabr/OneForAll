@@ -129,7 +129,7 @@ Route::post('/adminMoney',[AccountController::class,'adminMoney']);
 Route::get('/seemoney',[AccountController::class,'show']);
 Route::get('/userLoyal',[LoyaltyController::class,'userLoyal']);
 
-Route::get('/transaction',[AccountController::class,'index']);
+Route::get('/transaction',[AccountController::class,'index']); ///cccc
 
 
 /*Route::prefix('admin')->group(function(){

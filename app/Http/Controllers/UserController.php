@@ -40,28 +40,10 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-  /*  protected function validator(array $data){
-        return validator::make($data,[
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:6|confirmed'
-
-        ]);
-    }*/
+ 
      public function create(Request $request)
     {
 
-  /*  $rules = [
-            'name' => 'required|string|max:255',
-            'email'    => 'unique:users|required|string|email|max:255',
-            'password' => 'required|min:8',
-            'phone_number' =>'required|min:10|max:10',
-            'age'=>['required',new AgeRange]
-        ];
-
-        $input     = $request->only('name', 'email','password','phone_number','age');
-
-        $validator = Validator::make($input, $rules);*/
         $validator = Validator::make($request->all(),[
             'name' => 'required|string|max:255',
           //  'user_name' => 'unique:users|required|string|max:255',
@@ -76,13 +58,7 @@ class UserController extends Controller
         if ($validator->fails()) {
             return response()->json(['success' => false, 'error' => $validator->messages()],422);
         }
-       /* $name = $request->name;
-        $email    = $request->email;
-        $password = $request->password;
-        $phone_number = $request->phone_number;
-        $age = $request->age;
-        $user     = User::create(['name' => $name, 'email' => $email, 'password' => Hash::make($password),'phone_number' => $phone_number,'age' =>$age]);
-*/
+  
         $request['password']= Hash::make($request['password']);
 
         $user = User::query()->create([
@@ -166,26 +142,12 @@ class UserController extends Controller
     }
     public function logout(Request $request) {
 
-     /*   $request->user()->token()->revoke();
-        return response()->json([
-            'message'=>'loggedout'
-        ]);*/
+    
         $accessToken = auth()->user()->token();
         $token= $request->user()->tokens->find($accessToken);
         $token->revoke();
         return response(['message' => 'You have been successfully logged out.'], 200);
-            /*  if(auth()->user()){
-            $user = auth()->user();
-            $user->token = null;
-            $user->save() ;
-            return response()->json(['message'=>'loggedout']);
 
-        }
-        return response()->json([
-            'error' =>'unable to logout user',
-            'code' => 401,
-
-        ], 401);*/
     }
     /**
      * Display the specified resource.
@@ -264,9 +226,7 @@ class UserController extends Controller
        $final = $result->orderBY('products_count',$sortOrder)->take(5)->get();
         return $final;
 
-        /*  return User::withCount(['products' => function ($query) {
-            $query->orderBY('products_count', 'desc');
-    }])->get();*/
+        
     }
 
 }

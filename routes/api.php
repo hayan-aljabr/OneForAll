@@ -29,32 +29,22 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-/*Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});*/
 
-/*Route::group(['middleware' => ['auth:sanctum']], function () {
-
-});*/
 Route::get('/home',[ProductController::class,"index"] );
 Route::middleware('auth:api')->put('users/{id}', [UserController::class,"update"]);
-Route::get('users', [UserController::class,"index"]);//->>>>>>>>>>bilal
-Route::get('users/{id}', [UserController::class,"show"]);//->>>>>>>>>>>>>>bilal
+Route::get('users', [UserController::class,"index"]);
+Route::get('users/{id}', [UserController::class,"show"]);
 Route::post('/store', [UserController::class, "create"]);
 Route::get('/category', [CategoryController::class, "index"]);
 Route::post('/login', [UserController::class, "login"]);
 Route::middleware('auth:api')->delete('users/{user}', [UserController::class, "destroy"]);
-//Route::put('updateProdcut/{producr}',);
 Route::middleware('auth:api')->Resource('/products', ProductController::class)->except(['index','show']);
 Route::post('/report',[ReportController::class, 'store']);
 Route::get('/report',[ReportController::class, 'index']);
 
-//Route::post('products/{product_id}/reviews',[ReviewController::class, 'store']);
 Route::middleware('auth:api')->apiResource('products/{product}/reviews',ReviewController::class)->except(['show']);
-//Route::group(['prefix'=>'products'],function(){
-  //  Route::Resource('/{product}/reviews',[ReviewController::class]);
 
-//});
+ 
 Route::middleware('auth:api')->get('/myProducts',[ProductController::class,'showByUser']);
 Route::get('/products/{name}',[ProductController::class, 'show']);
 Route::get('/productPhoto/{id}', [ProductController::class,'getProductImage']);
@@ -73,8 +63,7 @@ Route::get('/getProduct/{id}',[ProductController::class, 'getProduct']);
 
 
 Route::middleware('auth:api','access.controll')->resource('/categories', CategoryController::class);
-//Route::middleware('auth:api')->post('/storeCate', [CategoryController::class, "store"]);
-//Route::middleware('auth:api')->post('/storePro', [ProductController::class, "store"]);
+
 Route::middleware('auth:api')->post('/logout', [UserController::class, "logout"]);
 Route::get('/productsCat' , [ProductController::class, "showByCategory"]);
 Route::middleware('auth:api')->Resource('cart', CartController::class)->except(['update', 'show','destroy']);
@@ -132,12 +121,6 @@ Route::get('/userLoyal',[LoyaltyController::class,'userLoyal']);
 Route::get('/transaction',[AccountController::class,'index']); ///ccccccc
 
 
-/*Route::prefix('admin')->group(function(){
-    Route::post('login', AuthController::class , 'login');
-    Route::post('signup', AuthController::class , 'signUp');
-
-});*/
-//Route::post('/logout', [UserController::class, "logout"]);
 
 
 

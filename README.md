@@ -26,17 +26,10 @@ To get started with ONEFORALL, please refer to the [documentation](#) for detail
 
 ## Contributing
 
-We welcome contributions from the community to enhance ONEFORALL further. Please review our [contribution guidelines](#) before getting started.
+We welcome contributions from the community to enhance ONEFORALL further.
 
 ## Code of Conduct
 
-We enforce a Code of Conduct to ensure a welcoming and inclusive community. Please review our [Code of Conduct](#) to understand our standards of behavior.
+We enforce a Code of Conduct to ensure a welcoming and inclusive community. 
 
-## Security Vulnerabilities
-
-If you discover any security vulnerabilities within ONEFORALL, please report them via email to [security@oneforall.com](mailto:security@oneforall.com). We take all security concerns seriously and will address them promptly.
-
-## License
-
-ONEFORALL is open-source software licensed under the [MIT license](https://opensource.org/licenses/MIT).
 
